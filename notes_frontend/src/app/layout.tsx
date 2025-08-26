@@ -1,9 +1,11 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import { AuthProvider } from "@/lib/auth";
+import React from "react";
 
 export const metadata: Metadata = {
-  title: "Minimal Next.js App",
-  description: "Ultra-minimal Next.js application",
+  title: "Notes",
+  description: "Personal notes manager",
 };
 
 export default function RootLayout({
@@ -11,10 +13,18 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
+  const cssVars: React.CSSProperties = {
+    // set CSS variables for brand colors
+    ["--color-primary" as unknown as keyof React.CSSProperties]: "#2563eb",
+    ["--color-secondary" as unknown as keyof React.CSSProperties]: "#64748b",
+    ["--color-accent" as unknown as keyof React.CSSProperties]: "#facc15",
+    ["--color-background" as unknown as keyof React.CSSProperties]: "#ffffff",
+  };
+
   return (
     <html lang="en" suppressHydrationWarning>
-      <body suppressHydrationWarning>
-        {children}
+      <body suppressHydrationWarning style={cssVars} className="text-gray-900">
+        <AuthProvider>{children}</AuthProvider>
       </body>
     </html>
   );

@@ -1,36 +1,56 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Notes Frontend
 
-## Getting Started
+Next.js-based UI for a personal notes application. Includes:
+- User authentication (login/signup)
+- Notes CRUD (list, create, edit, delete)
+- Search notes
+- Modern light theme with colors:
+  - primary: #2563eb
+  - secondary: #64748b
+  - accent: #facc15
+- Layout: Header + Sidebar (notes list) + Main editor/view.
 
-First, run the development server:
+## Environment variables
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+Create a `.env.local` file at the project root with:
+
+```
+NEXT_PUBLIC_API_BASE_URL=http://localhost:4000/api
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+The app reads the auth token from `localStorage` key `auth_token`.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Backend API (expected)
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- POST /auth/login { email, password } -> { token, user }
+- POST /auth/signup { email, password } -> { token, user }
+- GET /auth/me -> { id, email }
+- GET /notes?q=... -> Note[]
+- POST /notes { title, content } -> Note
+- GET /notes/:id -> Note
+- PUT /notes/:id { title, content } -> Note
+- DELETE /notes/:id -> { success: true }
 
-## Learn More
+All notes endpoints require header `Authorization: Bearer <token>`.
 
-To learn more about Next.js, take a look at the following resources:
+## Run locally
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Install dependencies and start:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```
+npm install
+npm run dev
+```
 
-## Deploy on Vercel
+Navigate to http://localhost:3000
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Build and export
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```
+npm run build
+npm start
+```
+
+## Styling
+
+The app uses Tailwind CSS (v4) and CSS variables for brand colors. Utilities like `.bg-primary`, `.text-secondary`, `.bg-accent` are available in `globals.css`.
